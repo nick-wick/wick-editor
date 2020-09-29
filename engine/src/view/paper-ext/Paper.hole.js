@@ -658,7 +658,7 @@
                                 return null;
                             }
                             var addedCircle = circle.clone().scale(1 / RADIUS);
-                            addedCircle.fillColor = holeColor.red === 0 ? new paper.Color(1, 1, 1) : new paper.Color(0, 0, 0);
+                            addedCircle.fillColor = holeColor && holeColor.red === 1 ? new paper.Color(0, 0, 0) : new paper.Color(1, 1, 1);
                             layerGroup.addChild(addedCircle);
                             circle.remove();
                             NORMAL_SEGS += 4;
