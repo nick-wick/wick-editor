@@ -26,6 +26,7 @@ gulp.task("default", function() {
       'lib/base64-arraybuffer.js',
       'lib/convert-range.js',
       'lib/croquis.js',
+      'lib/WickBrush.js',
       'lib/currentTransform.js',
       'lib/esprima.js',
       'lib/floodfill.min.js',

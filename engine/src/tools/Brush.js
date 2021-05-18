@@ -40,6 +40,15 @@ Wick.Tools.Brush = class extends Wick.Tool {
 
         this.MIN_PRESSURE = 0.14;
 
+        this.canvas = document.getElementById('wick-brush-canvas');
+        if (this.canvas) {
+            this.WickBrush = new WickBrush({
+                canvas: this.canvas,
+            });
+        }
+        
+
+        //eliminate
         this.croquis = null;
         this.croquisDOMElement = null;
         this.croquisBrush = null;
@@ -54,6 +63,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
 
         this._croquisStartTimeout = null;
 
+        //eliminate
         // These are used to crop the final path image.
         this.strokeBounds = new paper.Rectangle();
         this._lastMousePoint = new paper.Point(0,0);
@@ -75,6 +85,16 @@ Wick.Tools.Brush = class extends Wick.Tool {
         if(this._isInProgress)
             this.finishStrokeEarly();
 
+        if (!this.WickBrush) {
+            this.canvas = document.getElementById('wick-brush-canvas');
+            if (this.canvas) {
+                this.WickBrush = new WickBrush({
+                    canvas: this.canvas,
+                });
+            }
+        }
+
+        //eliminate
         if(!this.croquis) {
             this.croquis = new Croquis();
             this.croquis.setCanvasSize(500, 500);
@@ -99,11 +119,13 @@ Wick.Tools.Brush = class extends Wick.Tool {
 
         this._isInProgress = false;
 
+        //eliminate
         this._lastMousePoint = new paper.Point(0,0);
         this._lastMousePressure = 1;
     }
 
     onDeactivate (e) {
+        //change comment
         // This prevents croquis from leaving stuck brush strokes on the screen.
         this.finishStrokeEarly();
     }
@@ -121,11 +143,14 @@ Wick.Tools.Brush = class extends Wick.Tool {
 
         this._currentDrawingFrame = this.project.activeFrame;
 
+        //eliminate
         clearTimeout(this._croquisStartTimeout);
+
         this._isInProgress = true;
 
         this._updateCanvasAttributes();
 
+        //change update WickBrush params
         // Update croquis params
         this.croquisBrush.setSize(this._getRealBrushSize());
         this.croquisBrush.setColor(this.getSetting('fillColor').hex);
@@ -134,6 +159,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
         this.croquis.setToolStabilizeWeight((this.getSetting('brushStabilizerWeight') / 100.0) + 0.3);
         this.croquis.setToolStabilizeInterval(1);
 
+        //change call WickBrush.down()
         // Forward mouse event to croquis canvas
         var point = this._croquisToPaperPoint(e.point);
         this._updateStrokeBounds(point);
@@ -149,6 +175,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
     onMouseDrag (e) {
         if(!this._isInProgress) return;
 
+        //change call WickBrush.move()
         // Forward mouse event to croquis canvas
         var point = this._croquisToPaperPoint(e.point);
         this._updateStrokeBounds(point);
@@ -160,6 +187,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
             return;
         }
 
+        //eliminate
         this.lastPressure = this.pressure;
     }
 
@@ -167,9 +195,11 @@ Wick.Tools.Brush = class extends Wick.Tool {
         if(!this._isInProgress) return;
         this._isInProgress = false;
 
+        //eliminate
         var point = this._croquisToPaperPoint(e.point);
         this._calculateStrokeBounds(point);
 
+        //change to WickBrush.up()
         try {
             this.croquis.up(point.x, point.y, this.lastPressure);
         } catch (e) {
@@ -192,6 +222,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
         }
     }
 
+    //eliminate
     /**
      * Croquis throws a lot of errrors. This is a helpful function to handle those errors gracefully.
      */
@@ -221,9 +252,13 @@ Wick.Tools.Brush = class extends Wick.Tool {
         if(!this._isInProgress) return;
         this._isInProgress = false;
 
+        //change call WickBrush.cancel and clear canvas
+
+        //eliminate
         // "Give up" on the current stroke by forcing a mouseup
         this.croquis.up(this._lastMousePoint.x, this._lastMousePoint.y, this._lastMousePressure);
 
+        //eliminate
         // Clear the current croquis canvas
         setTimeout(() => {
             this.croquis.clearLayer();
@@ -240,11 +275,14 @@ Wick.Tools.Brush = class extends Wick.Tool {
         // Hide the croquis canvas so that the current stroke is never seen on the new frame.
         this.croquisDOMElement.style.opacity = 0;
 
+        //change call WickBrush.up(null) (can be null, up doesn't use the event)
         // "Give up" on the current stroke by forcing a mouseup
         this.croquis.up(this._lastMousePoint.x, this._lastMousePoint.y, this._lastMousePressure);
 
+        //eliminate
         // Add path to project
         this._calculateStrokeBounds(this._lastMousePoint);
+
         this._potraceCroquisCanvas(this._lastMousePoint);
     }
 
@@ -271,44 +309,52 @@ Wick.Tools.Brush = class extends Wick.Tool {
             return;
         }
 
+        //change maybe only this.paper.view.enablePressure();
         // Update croquis element and pressure options
         if(!this.paper.view._element.parentElement.contains(this.croquisDOMElement)) {
             this.paper.view.enablePressure();
             this.paper.view._element.parentElement.appendChild(this.croquisDOMElement);
         }
 
+        //eliminate
         // Update croquis element canvas size
         if(this.croquis.getCanvasWidth() !== this.paper.view._element.width ||
            this.croquis.getCanvasHeight() !== this.paper.view._element.height) {
             this.croquis.setCanvasSize(this.paper.view._element.width, this.paper.view._element.height);
         }
 
+        //change WickBrush canvas instead
         // Fake brush opacity in croquis by changing the opacity of the croquis canvas
         this.croquisDOMElement.style.opacity = this.getSetting('fillColor').a;
     }
 
+    //eliminate
     /* Convert a point in Croquis' canvas space to paper.js's canvas space. */
     _croquisToPaperPoint (croquisPoint) {
         var paperPoint = this.paper.view.projectToView(croquisPoint.x, croquisPoint.y);
         return paperPoint;
     }
 
+    //eliminate
     /* Used for calculating the crop amount for potrace. */
     _resetStrokeBounds (point) {
         this.strokeBounds = new paper.Rectangle(point.x, point.y, 1, 1);
     }
 
+    //eliminate
     /* Used for calculating the crop amount for potrace. */
     _updateStrokeBounds (point) {
         this.strokeBounds = this.strokeBounds.include(point);
     }
 
+    //eliminate
     /* Used for saving information on the mouse (croquis does not save this.) */
     _updateLastMouseState (point, pressure) {
         this._lastMousePoint = new paper.Point(point.x, point.y);
         this._lastMousePressure = this.pressure;
     }
 
+    //eliminate
     _calculateStrokeBounds (point) {
         // Forward mouse event to croquis canvas
         this._updateStrokeBounds(point);
@@ -319,6 +365,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
     /* Create a paper.js path by potracing the croquis canvas, and add the resulting path to the project. */
     _potraceCroquisCanvas (point) {
         this.errorOccured = false;
+        //change create paper rectangle from WickBrush.bounds, maybe expand it a couple pixels, crop it to width and height
         var strokeBounds = this.strokeBounds.clone();
 
         // Attempting to draw with a transparent fill color. Throw an error.
@@ -328,8 +375,10 @@ Wick.Tools.Brush = class extends Wick.Tool {
             return;
         }
 
+        //change get rid of timeout
         // Give croquis just a little bit to get the canvas ready...
         this._croquisStartTimeout = setTimeout(() => {
+            //change set canvas to WickBrush canvas
             // Retrieve Croquis canvas
             var canvas = this.paper.view._element.parentElement.getElementsByClassName('croquis-layer-canvas')[1];
             if(!canvas) {
@@ -378,11 +427,14 @@ Wick.Tools.Brush = class extends Wick.Tool {
             // Done! Add the path to the project
             this.addPathToProject(result, this._currentDrawingFrame);
 
+            //eliminate
             // We're done potracing using the current croquis canvas, reset the stroke bounds
             this._resetStrokeBounds(point);
 
+            //change clear WickBrush canvas
             // Clear croquis canvas
             this.croquis.clearLayer();
+            
             this.fireEvent({eventName: 'canvasModified', actionName: 'brush'});
         }, Wick.Tools.Brush.CROQUIS_WAIT_AMT_MS);
     }
