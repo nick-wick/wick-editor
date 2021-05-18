@@ -1,5 +1,5 @@
 /*Wick Engine https://github.com/Wicklets/wick-engine*/
-var WICK_ENGINE_BUILD_VERSION = "2021.5.18.1.52.18";
+var WICK_ENGINE_BUILD_VERSION = "2021.5.18.11.28.51";
 /*!
  * Paper.js v0.12.4 - The Swiss Army Knife of Vector Graphics Scripting.
  * http://paperjs.org/
@@ -59360,6 +59360,466 @@ Wick.Tools = {};
  * You should have received a copy of the GNU General Public License
  * along with Wick Engine.  If not, see <https://www.gnu.org/licenses/>.
  */
+// Wick.Tools.Brush = class extends Wick.Tool {
+//     static get CROQUIS_WAIT_AMT_MS () {
+//         return 100;
+//     }
+//     get doubleClickEnabled () {
+//         return false;
+//     }
+//     /**
+//      * Creates the brush tool.
+//      */
+//     constructor () {
+//         super();
+//         this.name = 'brush';
+//         this.BRUSH_POINT_SPACING = 0.2;
+//         this.BRUSH_STABILIZER_LEVEL = 3;
+//         this.POTRACE_RESOLUTION = 1.0;
+//         this.MIN_PRESSURE = 0.14;
+//         //<canvas id="wick-brush-canvas" ref={this.wickBrushCanvas} style={{pointerEvents: "none", width:"100%", height:"100%", position: "absolute", left: "0px", top: "0px", display: "block"}}></canvas>
+//         // this.container = document.getElementById('wick-canvas-container');
+//         // this.canvas = document.createElement('canvas');
+//         // this.canvas.setAttribute('className', 'wick-brush-canvas');
+//         // this.container.appendChild(this.canvas);
+//         // if (this.canvas) {
+//         //     this.WickBrush = new WickBrush({
+//         //         canvas: this.canvas,
+//         //     });
+//         // }
+//         // eliminate
+//         // this.croquis = null;
+//         // this.croquisDOMElement = null;
+//         // this.croquisBrush = null;
+//         // this.cachedCursor = null;
+//         // this.lastPressure = null;
+//         // this.errorOccured = false;
+//         // this._isInProgress = false;
+//         this._croquisStartTimeout = null;
+//         // //eliminate
+//         // // These are used to crop the final path image.
+//         // this.strokeBounds = new paper.Rectangle();
+//         // this._lastMousePoint = new paper.Point(0,0);
+//         // this._lastMousePressure = 1;
+//         // The frame that the brush started the current stroke on.
+//         this._currentDrawingFrame = null;
+//     }
+//     get cursor () {
+//         // the brush cursor is done in a custom way using _regenCursor().
+//     }
+//     get isDrawingTool () {
+//         return true;
+//     }
+//     onActivate (e) {
+//         console.log('Activate');
+//         if(this._isInProgress) {
+//             console.log('P');
+//             this.finishStrokeEarly();
+//         }
+//         //console.log('A');
+//         //eliminate
+//         // if(!this.croquis) {
+//         //     this.croquis = new Croquis();
+//         //     this.croquis.setCanvasSize(500, 500);
+//         //     this.croquis.addLayer();
+//         //     this.croquis.fillLayer('rgba(0,0,0,0)');
+//         //     this.croquis.addLayer();
+//         //     this.croquis.selectLayer(1);
+//         //     this.croquis.lockHistory();
+//         //     this.croquisBrush = new Croquis.Brush();
+//         //     this.croquis.setTool(this.croquisBrush);
+//         //     this.croquisDOMElement = this.croquis.getDOMElement();
+//         //     this.croquisDOMElement.style.position = 'absolute';
+//         //     this.croquisDOMElement.style.left = '0px';
+//         //     this.croquisDOMElement.style.top = '0px';
+//         //     this.croquisDOMElement.style.width = '100%';
+//         //     this.croquisDOMElement.style.height = '100%';
+//         //     this.croquisDOMElement.style.display = 'block';
+//         //     this.croquisDOMElement.style.pointerEvents = 'none';
+//         // }
+//         // if (!this.WickBrush) {
+//         //     console.log('B');
+//         //     // this.container = document.getElementById('wick-canvas-container');
+//         //     // this.canvas = document.createElement('canvas');
+//         //     // this.canvas.setAttribute('className', 'wick-brush-canvas');
+//         //     // this.container.appendChild(this.canvas);
+//         //     // if (this.canvas) {
+//         //     //     this.WickBrush = new WickBrush({
+//         //     //         canvas: this.canvas,
+//         //     //     });
+//         //     // }
+//         //     console.log('C');
+//         // }
+//         //console.log('D');
+//         this._isInProgress = false;
+//         //eliminate
+//         // this._lastMousePoint = new paper.Point(0,0);
+//         // this._lastMousePressure = 1;
+//         //console.log('activatedone');
+//     }
+//     onDeactivate (e) {
+//         //chang comment
+//         // This prevents WickBrush from leaving stuck brush strokes on the screen.
+//         this.finishStrokeEarly();
+//     }
+//     onMouseMove (e) {
+//         console.log('move');
+//         super.onMouseMove(e);
+//         //change
+//         // if (this.WickBrush) {
+//         //     this.WickBrush.change({pressure: this.pressure});
+//         //     this.WickBrush.move(e);
+//         // }
+//         this._updateCanvasAttributes();
+//         this._regenCursor();
+//     }
+//     onMouseDown (e) {
+//         console.log('down');
+//         if(this._isInProgress)
+//             this.discard();
+//         this._currentDrawingFrame = this.project.activeFrame;
+//         //eliminate
+//         clearTimeout(this._croquisStartTimeout);
+//         this._isInProgress = true;
+//         this._updateCanvasAttributes();
+//         //chang update WickBrush params
+//         // Update WickBrush params
+//         // this.WickBrush.change({
+//         //     size: this._getRealBrushSize(), 
+//         //     fillColor: this.getSetting('fillColor').hex, 
+//         //     smoothNodesSpacing: this.BRUSH_POINT_SPACING, 
+//         //     smoothing: this.getSetting('brushStabilizerWeight'),
+//         //     pressure: this.pressure,
+//         // });
+//         // Update croquis params
+//         // this.croquisBrush.setSize(this._getRealBrushSize());
+//         // this.croquisBrush.setColor(this.getSetting('fillColor').hex);
+//         // this.croquisBrush.setSpacing(this.BRUSH_POINT_SPACING);
+//         // this.croquis.setToolStabilizeLevel(this.BRUSH_STABILIZER_LEVEL);
+//         // this.croquis.setToolStabilizeWeight((this.getSetting('brushStabilizerWeight') / 100.0) + 0.3);
+//         // this.croquis.setToolStabilizeInterval(1);
+//         //chang call WickBrush.down()
+//         // this.WickBrush.down(e);
+//         // Forward mouse event to croquis canvas
+//         // var point = this._croquisToPaperPoint(e.point);
+//         // this._updateStrokeBounds(point);
+//         // try {
+//         //     this._updateLastMouseState(point, this.pressure);
+//         //     this.croquis.down(point.x, point.y, this.pressure);
+//         // } catch (e) {
+//         //     this.handleBrushError(e);
+//         //     return;
+//         // }
+//         console.log('downdone');
+//     }
+//     onMouseDrag (e) {
+//         console.log('drag');
+//         if(!this._isInProgress) {
+//             console.log('dragdone1');
+//             return;
+//         }
+//         //change update pressure, call WickBrush.move()
+//         //this.WickBrush.draw();
+//         //this.WickBrush.change({pressure: this.pressure});
+//         //this.WickBrush.move(e);
+//         // Forward mouse event to croquis canvas
+//         // var point = this._croquisToPaperPoint(e.point);
+//         // this._updateStrokeBounds(point);
+//         // try {
+//         //     this._updateLastMouseState(point, this.pressure);
+//         //     this.croquis.move(point.x, point.y, this.pressure);
+//         // } catch (e) {
+//         //     this.handleBrushError(e);
+//         //     return;
+//         // }
+//         //eliminate
+//         // this.lastPressure = this.pressure;
+//         console.log('dragdone');
+//     }
+//     onMouseUp (e) {
+//         console.log('up');
+//         if(!this._isInProgress) return;
+//         this._isInProgress = false;
+//         //eliminate
+//         // var point = this._croquisToPaperPoint(e.point);
+//         // this._calculateStrokeBounds(point);
+//         //chang to WickBrush.up()
+//         // this.WickBrush.up(null);
+//         // try {
+//         //     this.croquis.up(point.x, point.y, this.lastPressure);
+//         // } catch (e) {
+//         //     this.handleBrushError(e);
+//         //     return;
+//         // }
+//         this._potraceCroquisCanvas();
+//         console.log('updone');
+//     }
+//     /**
+//      * The current amount of pressure applied to the paper js canvas this tool belongs to.
+//      */
+//     get pressure () {
+//         if(this.getSetting('pressureEnabled')) {
+//             var pressure = this.paper.view.pressure;
+//             return convertRange(pressure, [0, 1], [this.MIN_PRESSURE, 1]);
+//         } else {
+//             return 1;
+//         }
+//     }
+//     //eliminate
+//     /**
+//      * Croquis throws a lot of errrors. This is a helpful function to handle those errors gracefully.
+//      */
+//     // handleBrushError (e) {
+//     //     this._isInProgress = false;
+//     //     this.croquis.clearLayer();
+//     //     if(!this.errorOccured) {
+//     //         console.error("Brush error");
+//     //         console.error(e);
+//     //     }
+//     //     this.errorOccured = true;
+//     // }
+//     /**
+//      * Is the brush currently making a stroke?
+//      * @type {boolean}
+//      */
+//     isInProgress () {
+//         return this._isInProgress;
+//     }
+//     /**
+//      * Discard the current brush stroke.
+//      */
+//     discard () {
+//         if(!this._isInProgress) return;
+//         this._isInProgress = false;
+//         //chang call WickBrush.cancel and clear canvas
+//         // this.WickBrush.cancel();
+//         // this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
+//         // "Give up" on the current stroke by forcing a mouseup
+//         // this.croquis.up(this._lastMousePoint.x, this._lastMousePoint.y, this._lastMousePressure);
+//         //eliminate
+//         // Clear the current croquis canvas
+//         // setTimeout(() => {
+//         //     this.croquis.clearLayer();
+//         // }, 10);
+//     }
+//     /**
+//      * Force the current stroke to be finished, and add the stroke to the project.
+//      */
+//     finishStrokeEarly () {
+//         if(!this._isInProgress) return;
+//         this._isInProgress = false;
+//         // Hide the croquis canvas so that the current stroke is never seen on the new frame.
+//         this.croquisDOMElement.style.opacity = 0;
+//         //chang call WickBrush.up(null) (can be null, up doesn't use the event)
+//         // this.WickBrush.up(null);
+//         // "Give up" on the current stroke by forcing a mouseup
+//         // this.croquis.up(this._lastMousePoint.x, this._lastMousePoint.y, this._lastMousePressure);
+//         //eliminate
+//         // Add path to project
+//         // this._calculateStrokeBounds(this._lastMousePoint);
+//         this._potraceCroquisCanvas();
+//     }
+//     /* Generate a new circle cursor based on the brush size. */
+//     _regenCursor () {
+//         var size = (this._getRealBrushSize());
+//         var color = this.getSetting('fillColor').hex;
+//         this.cachedCursor = this.createDynamicCursor(color, size, this.getSetting('pressureEnabled'));
+//         this.setCursor(this.cachedCursor);
+//     }
+//     /* Get the actual pixel size of the brush to send to Croquis. */
+//     _getRealBrushSize () {
+//         var size = this.getSetting('brushSize') + 1;
+//         if(!this.getSetting('relativeBrushSize')) {
+//             size *= this.paper.view.zoom;
+//         }
+//         return size;
+//     }
+//     /* Update Croquis and the div containing croquis to reflect all current options. */
+//     _updateCanvasAttributes () {
+//         if(!this.paper.view._element.parentElement) {
+//             return;
+//         }
+//         //chang maybe only this.paper.view.enablePressure();
+//         this.paper.view.enablePressure(); // Not sure if this is necessary
+//         // Update croquis element and pressure options
+//         // if(!this.paper.view._element.parentElement.contains(this.croquisDOMElement)) {
+//         //     this.paper.view.enablePressure();
+//         //     this.paper.view._element.parentElement.appendChild(this.croquisDOMElement);
+//         // }
+//         //eliminate
+//         // Update croquis element canvas size
+//         // if(this.croquis.getCanvasWidth() !== this.paper.view._element.width ||
+//         //    this.croquis.getCanvasHeight() !== this.paper.view._element.height) {
+//         //     this.croquis.setCanvasSize(this.paper.view._element.width, this.paper.view._element.height);
+//         // }
+//         //chang WickBrush canvas instead
+//         //this.canvas.style.opacity = this.getSetting('fillColor').a;
+//         // Fake brush opacity in croquis by changing the opacity of the croquis canvas
+//         // this.croquisDOMElement.style.opacity = this.getSetting('fillColor').a;
+//     }
+//     //eliminate
+//     /* Convert a point in Croquis' canvas space to paper.js's canvas space. */
+//     // _croquisToPaperPoint (croquisPoint) {
+//     //     var paperPoint = this.paper.view.projectToView(croquisPoint.x, croquisPoint.y);
+//     //     return paperPoint;
+//     // }
+//     //eliminate
+//     /* Used for calculating the crop amount for potrace. */
+//     // _resetStrokeBounds (point) {
+//     //     this.strokeBounds = new paper.Rectangle(point.x, point.y, 1, 1);
+//     // }
+//     //eliminate
+//     /* Used for calculating the crop amount for potrace. */
+//     // _updateStrokeBounds (point) {
+//     //     this.strokeBounds = this.strokeBounds.include(point);
+//     // }
+//     //eliminate
+//     /* Used for saving information on the mouse (croquis does not save this.) */
+//     // _updateLastMouseState (point, pressure) {
+//     //     this._lastMousePoint = new paper.Point(point.x, point.y);
+//     //     this._lastMousePressure = this.pressure;
+//     // }
+//     //eliminate
+//     // _calculateStrokeBounds (point) {
+//     //     // Forward mouse event to croquis canvas
+//     //     this._updateStrokeBounds(point);
+//     //     // This prevents cropping out edges of the brush stroke
+//     //     this.strokeBounds = this.strokeBounds.expand(this._getRealBrushSize());
+//     // }
+//     /* Create a paper.js path by potracing the croquis canvas, and add the resulting path to the project. */
+//     _potraceCroquisCanvas () {
+//         console.log('potrace');
+//         return;
+//         this.errorOccured = false;
+//         //chang create paper rectangle from WickBrush.bounds, maybe expand it a couple pixels, crop it to width and height
+//         //change add .expand(1)?
+//         let strokeBounds = new paper.Rectangle(
+//             this.WickBrush.bounds.left, 
+//             this.WickBrush.bounds.top, 
+//             this.WickBrush.bounds.right - this.WickBrush.bounds.left, 
+//             this.WickBrush.bounds.bottom - this.WickBrush.bounds.top);
+//         // var strokeBounds = this.strokeBounds.clone();
+//         // Attempting to draw with a transparent fill color. Throw an error.
+//         if (this.getSetting('fillColor').a === 0) {
+//             this.handleBrushError('transparentColor');
+//             this.project.errorOccured("Fill Color is Transparent!");
+//             return;
+//         }
+//         //chang get rid of timeout
+//         // Give croquis just a little bit to get the canvas ready...
+//         this._croquisStartTimeout = setTimeout(() => {
+//         //chang set canvas to WickBrush canvas
+//         let canvas = this.canvas;
+//         // Retrieve Croquis canvas
+//         // var canvas = this.paper.view._element.parentElement.getElementsByClassName('croquis-layer-canvas')[1];
+//         // if(!canvas) {
+//         //     console.warn("Croquis canvas was not found in the canvas container. Something very bad has happened.")
+//         //     this.handleBrushError('misingCroquisCanvas');
+//         //     return;
+//         // }
+//         // Rip image data out of Croquis.js canvas
+//         // (and crop out empty space using strokeBounds - this massively speeds up potrace)
+//         var croppedCanvas = document.createElement("canvas");
+//         var croppedCanvasCtx = croppedCanvas.getContext("2d");
+//         croppedCanvas.width = strokeBounds.width;
+//         croppedCanvas.height = strokeBounds.height;
+//         if(strokeBounds.x < 0) strokeBounds.x = 0;
+//         if(strokeBounds.y < 0) strokeBounds.y = 0;
+//         croppedCanvasCtx.drawImage(
+//             canvas,
+//             strokeBounds.x, strokeBounds.y,
+//             strokeBounds.width, strokeBounds.height,
+//             0, 0, croppedCanvas.width, croppedCanvas.height);
+//         // Run potrace and add the resulting path to the project
+//         var svg = potrace.fromImage(croppedCanvas).toSVG(1/this.POTRACE_RESOLUTION/this.paper.view.zoom);
+//         var potracePath = this.paper.project.importSVG(svg);
+//         potracePath.fillColor = this.getSetting('fillColor').rgba;
+//         potracePath.position.x += this.paper.view.bounds.x;
+//         potracePath.position.y += this.paper.view.bounds.y;
+//         potracePath.position.x += strokeBounds.x / this.paper.view.zoom;
+//         potracePath.position.y += strokeBounds.y / this.paper.view.zoom;
+//         potracePath.remove();
+//         potracePath.closed = true;
+//         potracePath.children[0].closed = true;
+//         potracePath.children[0].applyMatrix = true;
+//         var result = potracePath.children[0];
+//         // Do special brush mode action
+//         var brushMode = this.getSetting('brushMode');
+//         if(this._currentDrawingFrame && this._currentDrawingFrame.view) {
+//             // Don't apply brush mode if there is no frame to draw on
+//             // (the frame is added during addPathToProject)
+//             result = this._applyBrushMode(brushMode, result, this._currentDrawingFrame.view.objectsLayer);
+//         }
+//         // Done! Add the path to the project
+//         this.addPathToProject(result, this._currentDrawingFrame);
+//         //eliminate
+//         // We're done potracing using the current croquis canvas, reset the stroke bounds
+//         // this._resetStrokeBounds(point);
+//         //chang clear WickBrush canvas
+//         this.canvas.getContext('2d').clearRect(0, 0, this.canvas.width, this.canvas.height);
+//         // Clear croquis canvas
+//         // this.croquis.clearLayer();
+//         this.fireEvent({eventName: 'canvasModified', actionName: 'brush'});
+//         }, Wick.Tools.Brush.CROQUIS_WAIT_AMT_MS);
+//     }
+//     _applyBrushMode (mode, path, layer) {
+//         if(!mode) {
+//             console.warn('_applyBrushMode: Invalid brush mode: ' + mode);
+//             console.warn('Valid brush modes are "inside" and "outside".')
+//             return;
+//         }
+//         if(mode === 'none') {
+//             return path;
+//         }
+//         var booleanOpName = {
+//             'inside': 'intersect',
+//             'outside': 'subtract',
+//         }[mode];
+//         var mask = null;
+//         layer.children.forEach(otherPath => {
+//             if(otherPath === mask) return;
+//             if(mask) {
+//                 var newMask = mask.unite(otherPath);
+//                 if((newMask.children && newMask.children.length === 0) ||
+//                    (newMask.segments && newMask.segments.length === 0)) {
+//                     // Ignore boolean ops that result in empty paths
+//                 } else {
+//                     mask = newMask;
+//                 }
+//                 newMask.remove();
+//             } else {
+//                 mask = otherPath;
+//             }
+//         });
+//         if(!mask) {
+//             // Nothing to mask with
+//             return path;
+//         }
+//         var result = path.clone({insert:false});
+//         result = result[booleanOpName](mask);
+//         result.remove();
+//         return result;
+//     }
+// }
+
+/*
+ * Copyright 2020 WICKLETS LLC
+ *
+ * This file is part of Wick Engine.
+ *
+ * Wick Engine is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Wick Engine is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Wick Engine.  If not, see <https://www.gnu.org/licenses/>.
+ */
 Wick.Tools.Brush = class extends Wick.Tool {
   static get CROQUIS_WAIT_AMT_MS() {
     return 100;
@@ -59375,19 +59835,18 @@ Wick.Tools.Brush = class extends Wick.Tool {
 
   constructor() {
     super();
+    console.log('construct');
     this.name = 'brush';
     this.BRUSH_POINT_SPACING = 0.2;
     this.BRUSH_STABILIZER_LEVEL = 3;
     this.POTRACE_RESOLUTION = 1.0;
-    this.MIN_PRESSURE = 0.14;
-    this.canvas = document.getElementById('wick-brush-canvas');
-
-    if (this.canvas) {
-      this.WickBrush = new WickBrush({
-        canvas: this.canvas
-      });
-    } //eliminate
-
+    this.MIN_PRESSURE = 0.14; // this.canvas = document.getElementById('wick-brush-canvas');
+    // if (this.canvas) {
+    //     this.WickBrush = new WickBrush({
+    //         canvas: this.canvas,
+    //     });
+    // }
+    //eliminate
 
     this.croquis = null;
     this.croquisDOMElement = null;
@@ -59414,18 +59873,16 @@ Wick.Tools.Brush = class extends Wick.Tool {
   }
 
   onActivate(e) {
-    if (this._isInProgress) this.finishStrokeEarly();
-
-    if (!this.WickBrush) {
-      this.canvas = document.getElementById('wick-brush-canvas');
-
-      if (this.canvas) {
-        this.WickBrush = new WickBrush({
-          canvas: this.canvas
-        });
-      }
-    } //eliminate
-
+    //console.log('activate');
+    if (this._isInProgress) this.finishStrokeEarly(); // if (!this.WickBrush) {
+    //     this.canvas = document.getElementById('wick-brush-canvas');
+    //     if (this.canvas) {
+    //         this.WickBrush = new WickBrush({
+    //             canvas: this.canvas,
+    //         });
+    //     }
+    // }
+    //eliminate
 
     if (!this.croquis) {
       this.croquis = new Croquis();
@@ -59454,12 +59911,14 @@ Wick.Tools.Brush = class extends Wick.Tool {
   }
 
   onDeactivate(e) {
-    //change comment
+    console.log('deactivate'); //change comment
     // This prevents croquis from leaving stuck brush strokes on the screen.
+
     this.finishStrokeEarly();
   }
 
   onMouseMove(e) {
+    //console.log('move');
     super.onMouseMove(e);
 
     this._updateCanvasAttributes();
@@ -59468,6 +59927,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
   }
 
   onMouseDown(e) {
+    console.log('down');
     if (this._isInProgress) this.discard();
     this._currentDrawingFrame = this.project.activeFrame; //eliminate
 
@@ -59501,6 +59961,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
   }
 
   onMouseDrag(e) {
+    console.log('drag');
     if (!this._isInProgress) return; //change call WickBrush.move()
     // Forward mouse event to croquis canvas
 
@@ -59522,6 +59983,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
   }
 
   onMouseUp(e) {
+    console.log('up');
     if (!this._isInProgress) return;
     this._isInProgress = false; //eliminate
 
@@ -59584,6 +60046,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
 
 
   discard() {
+    console.log('discard');
     if (!this._isInProgress) return;
     this._isInProgress = false; //change call WickBrush.cancel and clear canvas
     //eliminate
@@ -59602,6 +60065,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
 
 
   finishStrokeEarly() {
+    console.log('finishearly');
     if (!this._isInProgress) return;
     this._isInProgress = false; // Hide the croquis canvas so that the current stroke is never seen on the new frame.
 
@@ -59641,6 +60105,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
 
 
   _updateCanvasAttributes() {
+    //console.log('updatecanvas');
     if (!this.paper.view._element.parentElement) {
       return;
     } //change maybe only this.paper.view.enablePressure();
@@ -59706,19 +60171,21 @@ Wick.Tools.Brush = class extends Wick.Tool {
 
 
   _potraceCroquisCanvas(point) {
-    this.errorOccured = false; //change create paper rectangle from WickBrush.bounds
+    console.log('potrace');
+    this.errorOccured = false; //change create paper rectangle from WickBrush.bounds, maybe expand it a couple pixels, crop it to width and height
 
-    var strokeBounds = this.strokeBounds.clone();
-    console.log(strokeBounds); // Attempting to draw with a transparent fill color. Throw an error.
+    var strokeBounds = this.strokeBounds.clone(); // Attempting to draw with a transparent fill color. Throw an error.
 
     if (this.getSetting('fillColor').a === 0) {
       this.handleBrushError('transparentColor');
       this.project.errorOccured("Fill Color is Transparent!");
       return;
-    } // Give croquis just a little bit to get the canvas ready...
+    } //change get rid of timeout
+    // Give croquis just a little bit to get the canvas ready...
 
 
     this._croquisStartTimeout = setTimeout(() => {
+      //change set canvas to WickBrush canvas
       // Retrieve Croquis canvas
       var canvas = this.paper.view._element.parentElement.getElementsByClassName('croquis-layer-canvas')[1];
 
@@ -59760,9 +60227,11 @@ Wick.Tools.Brush = class extends Wick.Tool {
       } // Done! Add the path to the project
 
 
-      this.addPathToProject(result, this._currentDrawingFrame); // We're done potracing using the current croquis canvas, reset the stroke bounds
+      this.addPathToProject(result, this._currentDrawingFrame); //eliminate
+      // We're done potracing using the current croquis canvas, reset the stroke bounds
 
-      this._resetStrokeBounds(point); // Clear croquis canvas
+      this._resetStrokeBounds(point); //change clear WickBrush canvas
+      // Clear croquis canvas
 
 
       this.croquis.clearLayer();

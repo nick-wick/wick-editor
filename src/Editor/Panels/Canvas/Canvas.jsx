@@ -29,7 +29,6 @@ class Canvas extends Component {
     super(props);
 
     this.canvasContainer = React.createRef();
-    this.wickBrushCanvas = React.createRef();
   }
 
   componentDidMount() {
@@ -50,7 +49,6 @@ class Canvas extends Component {
 
     project.view.canvasBGColor = styles.editorCanvasBorder;
     project.view.canvasContainer = this.canvasContainer.current;
-    project.view.wickBrushCanvas = this.wickBrushCanvas.current;
     project.view.resize();
 
     project.view.on('canvasModified', (e, actionName) => {
@@ -73,7 +71,7 @@ class Canvas extends Component {
       <div id="canvas-container-wrapper" style={{width:"100%", height:"100%"}} aria-label="Canvas">
         { isOver && <div className="drag-drop-overlay" /> }
         <div id="wick-canvas-container" ref={this.canvasContainer}></div>
-        <canvas id="wick-brush-canvas" ref={this.wickBrushCanvas} style={{pointerEvents: "none", width:"100%", height:"100%", position: "absolute", left: "0px", top: "0px", display: "block"}}></canvas>
+        {/*<canvas id="wick-brush-canvas" style={{pointerEvents: "none", width:"100%", height:"100%", position: "absolute", left: "0px", top: "0px", display: "block"}}></canvas>*/}
       </div>
     )
   }
