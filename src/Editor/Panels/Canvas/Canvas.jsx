@@ -71,7 +71,7 @@ class Canvas extends Component {
       <div id="canvas-container-wrapper" style={{width:"100%", height:"100%"}} aria-label="Canvas">
         { isOver && <div className="drag-drop-overlay" /> }
         <div id="wick-canvas-container" ref={this.canvasContainer}></div>
-        {/*<canvas id="wick-brush-canvas" style={{pointerEvents: "none", width:"100%", height:"100%", position: "absolute", left: "0px", top: "0px", display: "block"}}></canvas>*/}
+        <canvas id="wick-brush-canvas" style={{pointerEvents: "none", width:"100%", height:"100%", position: "absolute", left: "0px", top: "0px", display: "block"}}></canvas>
       </div>
     )
   }
