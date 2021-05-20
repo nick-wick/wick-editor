@@ -108,7 +108,7 @@ Wick.Tools.Brush = class extends Wick.Tool {
             size: this._getRealBrushSize(), 
             fillStyle: this.getSetting('fillColor').hex, 
             smoothNodesSpacing: this.BRUSH_POINT_SPACING, 
-            smoothing: this.getSetting('brushStabilizerWeight'),
+            smoothing: this.getSetting('brushStabilizerWeight') * 0.8,
             pressure: this.pressure,
         });
         
